@@ -1,0 +1,29 @@
+
+// This is your new function. To start, set the name and path on the left.
+
+exports.handler = function(context, event, callback) {
+    // Here's an example of setting up some TWiML to respond to with this function
+      let twiml = new Twilio.twiml.VoiceResponse();
+    switch (event.Digits) {
+      case '1':
+        twiml.say('You pressed 1');
+        break;
+      case '2':
+        twiml.say('You pressed 2');
+        twiml.redirect('/say_something_stupid');
+        break;
+      default:
+        twiml.gather({
+          numDigits: 1,
+          action: '/welcome',
+          method: 'POST'
+        }).say('Hi! Press 1 for the sake of pressing 1. Press 2 if you want to play around.');
+        twiml.redirect('/welcome');
+        break;
+    }
+  
+    // This callback is what is returned in response to this function being invoked.
+    // It's really important! E.g. you might respond with TWiML here for a voice or SMS response.
+    // Or you might return JSON data to a studio flow. Don't forget it!
+    return callback(null, twiml);
+  };
